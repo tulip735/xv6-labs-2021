@@ -1,9 +1,6 @@
 struct stat;
 struct rtcdate;
 struct sysinfo;
-{
-    /* data */
-};
 
 
 // system calls
