@@ -100,12 +100,17 @@ sys_pgaccess(void)
   for (int i = 0; i < page_number; i++) {
     pte_t *pte = walk(pagetable, start_va + i * PGSIZE, 0);
     bitmask = bitmask | (((*pte & PTE_A) >> 6) >> i);
+    /* printf("flag %p\n", (((*pte & PTE_A) >> 6) >> i)); */
+    // clear PTE_A
     *pte = *pte & (~(PTE_A));
+
+    /* printf("pte %p\n", *pte); */
   }
 
   if (copyout(pagetable, mask_addr, (char*)&bitmask, sizeof(bitmask))) {
     return -1;
   }
+  /* vmprint(pagetable); */
 
   return 0;
 }
