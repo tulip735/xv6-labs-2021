@@ -99,10 +99,16 @@ sys_pgaccess(void)
   pagetable_t pagetable = myproc()->pagetable;
   for (int i = 0; i < page_number; i++) {
     pte_t *pte = walk(pagetable, start_va + i * PGSIZE, 0);
-    bitmask = bitmask | (((*pte & PTE_A) >> 6) >> i);
+    /* bitmask = bitmask | (((*pte & PTE_A) >> 6) >> i); */
+    if (*pte & PTE_A) {
+      bitmask |= (1 << i);
+      // clear PTE_A
+      *pte &= ~PTE_A;
+    }
+    
     /* printf("flag %p\n", (((*pte & PTE_A) >> 6) >> i)); */
     // clear PTE_A
-    *pte = *pte & (~(PTE_A));
+    /* *pte = *pte & (~(PTE_A)); */
 
     /* printf("pte %p\n", *pte); */
   }
